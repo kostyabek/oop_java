@@ -84,9 +84,7 @@ public class Player {
             left = chosenStone.getLeftValue();
             right = chosenStone.getRightValue();
 
-            if (sockets.length != 2)
-                throw new IllegalArgumentException();
-            else if (left == socket1.getLeftValue() && socket1.leftIsFree) {
+            if (left == socket1.getLeftValue() && socket1.leftIsFree) {
                 chosenStone.leftIsFree = false;
                 socket1.leftIsFree = false;
                 table.addFirst(chosenStone);
@@ -155,11 +153,11 @@ public class Player {
         if (hand.size() < handSize)
             return false;
         for (Stone stone: hand) {
-            if ((stone.getLeftValue() == socket1.getLeftValue() && socket1.leftIsFree || stone.getLeftValue() == socket1.getRightValue()) && socket1.rightIsFree) {
+            if (stone.getLeftValue() == socket1.getLeftValue() && socket1.leftIsFree || stone.getLeftValue() == socket1.getRightValue() && socket1.rightIsFree) {
                 return true;
             } else if (stone.getLeftValue() == socket2.getLeftValue() && socket2.leftIsFree || stone.getLeftValue() == socket2.getRightValue() && socket2.rightIsFree) {
                 return true;
-            } else if ((stone.getRightValue() == socket1.getLeftValue() && socket1.leftIsFree || stone.getRightValue() == socket1.getRightValue()) && socket1.rightIsFree) {
+            } else if (stone.getRightValue() == socket1.getLeftValue() && socket1.leftIsFree || stone.getRightValue() == socket1.getRightValue() && socket1.rightIsFree) {
                 return true;
             } else if (stone.getRightValue() == socket2.getLeftValue() && socket2.leftIsFree || stone.getRightValue() == socket2.getRightValue() && socket2.rightIsFree) {
                 return true;
@@ -167,13 +165,13 @@ public class Player {
         }
         return false;
     }
-    private boolean handChecker(Stone socket1, Stone socket2) {
+    public boolean handChecker(Stone socket1, Stone socket2) {
         for (Stone stone: hand) {
-            if ((stone.getLeftValue() == socket1.getLeftValue() && socket1.leftIsFree || stone.getLeftValue() == socket1.getRightValue()) && socket1.rightIsFree) {
+            if (stone.getLeftValue() == socket1.getLeftValue() && socket1.leftIsFree || stone.getLeftValue() == socket1.getRightValue() && socket1.rightIsFree) {
                 return true;
             } else if (stone.getLeftValue() == socket2.getLeftValue() && socket2.leftIsFree || stone.getLeftValue() == socket2.getRightValue() && socket2.rightIsFree) {
                 return true;
-            } else if ((stone.getRightValue() == socket1.getLeftValue() && socket1.leftIsFree || stone.getRightValue() == socket1.getRightValue()) && socket1.rightIsFree) {
+            } else if (stone.getRightValue() == socket1.getLeftValue() && socket1.leftIsFree || stone.getRightValue() == socket1.getRightValue() && socket1.rightIsFree) {
                 return true;
             } else if (stone.getRightValue() == socket2.getLeftValue() && socket2.leftIsFree || stone.getRightValue() == socket2.getRightValue() && socket2.rightIsFree) {
                 return true;

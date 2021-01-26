@@ -39,16 +39,19 @@ public class Game {
             currentPlayer = players.get(players.indexOf(currentPlayer) + 1);
 
         while (true) {
-            if (checkIfWinner())
-                return;
+            getSockets();
+            /*if (checkForWinner())
+                return;*/
 
             System.out.println(String.format("It is %s's turn to play!", currentPlayer.name));
             printTable();
-            getSockets();
             printSockets();
 
             currentPlayer.makeTurn(sc, table, sockets, bank, handSize);
-            currentPlayer.endTurn(sc);
+            getSockets();
+            if (checkForWinner())
+                return;
+            /*currentPlayer.endTurn(sc);*/
 
             if (players.indexOf(currentPlayer) + 1 == players.size())
                 currentPlayer = players.get(0);
@@ -57,10 +60,15 @@ public class Game {
         }
     }
 
-    private boolean checkIfWinner() {
-        if (currentPlayer.getHand().isEmpty()) {
+    private boolean checkForWinner() {
+        if (currentPlayer.getHand().isEmpty() && bank.isEmpty()) {
             System.out.println(String.format("%s is a winner!", currentPlayer.name));
             return true;
+        } else {
+            for (Player player: players) {
+                if (player.handChecker(sockets[0], sockets[1]))
+                    return false;
+            }
         }
         return false;
     }
