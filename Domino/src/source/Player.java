@@ -56,20 +56,26 @@ public class Player {
         Stone socket1 = sockets[0];
         Stone socket2 = sockets[1];
 
-        if (bank.isEmpty()) {
+        /*if (bank.isEmpty()) {
             System.out.println("Bank is empty!");
             if (!handChecker(socket1, socket2)) {
                 System.out.println("You cannot place a stone this turn!");
                 return;
             }
-        } else {
-            while(!handChecker(socket1, socket2, handSize)) {
-                hand.add(bank.get(0));
-                bank.remove(0);
-            }
+        } else {*/
+        if (bank.isEmpty())
+            System.out.println("Bank is empty!");
+        while (!handChecker(socket1, socket2, handSize) && !bank.isEmpty()) {
+            hand.add(bank.get(0));
+            bank.remove(0);
         }
-
         printHand();
+        if (bank.isEmpty() && !handChecker(socket1, socket2)){
+            System.out.println("Bank is empty!");
+            System.out.println("You cannot place a stone this turn!");
+            return;
+        }
+       //}
 
         do {
             System.out.print("Choose a stone: ");
@@ -138,7 +144,9 @@ public class Player {
 
     public void endTurn(Scanner sc) {
         String keyWord;
-        sc.nextLine();
+        // TODO: 1/27/2021 Fix excess '\n' request when no input before calling
+        if (sc.hasNextLine())
+            sc.nextLine();
         while (true) {
             System.out.print("Type 'next' to end your turn: ");
             keyWord = sc.nextLine();

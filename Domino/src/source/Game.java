@@ -40,8 +40,6 @@ public class Game {
 
         while (true) {
             getSockets();
-            /*if (checkForWinner())
-                return;*/
 
             System.out.println(String.format("It is %s's turn to play!", currentPlayer.name));
             printTable();
@@ -51,7 +49,7 @@ public class Game {
             getSockets();
             if (checkForWinner())
                 return;
-            /*currentPlayer.endTurn(sc);*/
+            currentPlayer.endTurn(sc);
 
             if (players.indexOf(currentPlayer) + 1 == players.size())
                 currentPlayer = players.get(0);
