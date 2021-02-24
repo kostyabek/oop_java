@@ -6,34 +6,34 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         Main mn = new Main();
-        int[][] arr = new int[][]{
+        int[][] initialValues = new int[][]{
                 new int[]{4,2,3,0,5,0,0,0,1,0},
                 new int[]{1,1,1,1,0,1,3,4,0,1},
                 new int[]{1,0,0,0,5,6,0,4,6,0},
                 new int[]{1,0,3,2,0,5,0,0,1,1},
         };
 
-        List<List<Integer[]>> zeroes = new ArrayList<>();
+        List<List<ZeroCoordinates>> passedZeroes = new ArrayList<>();
 
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[0].length; j++) {
+        for (int i = 0; i < initialValues.length; i++) {
+            for (int j = 0; j < initialValues[0].length; j++) {
                 zero:
-                if (arr[i][j] == 0) {
-                    for (List<Integer[]> chain: zeroes) {
-                        for (Integer[] coords: chain) {
-                            if (coords[0] == i && coords[1] == j) {
+                if (initialValues[i][j] == 0) {
+                    for (List<ZeroCoordinates> chain: passedZeroes) {
+                        for (ZeroCoordinates coords: chain) {
+                            if (coords.i == i && coords.j == j) {
                                 break zero;
                             }
                         }
                     }
-                    zeroes.add(new ArrayList<>());
-                    zeroes.get(zeroes.size() - 1).add(new Integer[]{i, j});
-                    mn.dive(arr, i, j, zeroes);
+                    passedZeroes.add(new ArrayList<>());
+                    passedZeroes.get(passedZeroes.size() - 1).add(new ZeroCoordinates(i, j));
+                    mn.dive(initialValues, i, j, passedZeroes);
                 }
             }
         }
         int maxSize = 0;
-        for (List<Integer[]> chain: zeroes) {
+        for (List<ZeroCoordinates> chain: passedZeroes) {
             if (chain.size() > maxSize) {
                 maxSize = chain.size();
             }
@@ -41,71 +41,103 @@ public class Main {
         System.out.println(String.format("Maximum chain size is %d", maxSize));
     }
 
-    public void dive(int[][] arr, int i, int j, List<List<Integer[]>> zeroes) {
+    public void dive(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         System.out.println(String.format("i=%d j=%d", i, j));
 
         //WEST
+        diveWest(arr, i, j, zeroes);
+        //NORTH-WEST
+        diveNorthWest(arr, i, j, zeroes);
+        //NORTH
+        diveNorth(arr, i, j, zeroes);
+        //NORTH-EAST
+        diveNorthEast(arr, i, j, zeroes);
+        //EAST
+        diveEast(arr, i, j, zeroes);
+        //SOUTH-EAST
+        diveSouthEast(arr, i, j, zeroes);
+        //SOUTH
+        diveSouth(arr, i, j, zeroes);
+        //SOUTH-WEST
+        diveSouthWest(arr, i, j, zeroes);
+    }
+
+    public void diveWest(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         if (j-1 >= 0) {
             if (arr[i][j-1] == 0 && !isInZeroes(i, j-1, zeroes)) {
-                zeroes.get(zeroes.size() - 1).add(new Integer[]{i, j-1});
+                zeroes.get(zeroes.size() - 1).add(new ZeroCoordinates(i, j-1));
                 dive(arr, i, j-1, zeroes);
             }
         }
-        //NORTH-WEST
+    }
+
+    public void diveNorthWest(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         if (i-1 >= 0 && j-1 >= 0) {
             if (arr[i-1][j-1] == 0 && !isInZeroes(i-1, j-1, zeroes)) {
-                zeroes.get(zeroes.size() - 1).add(new Integer[]{i-1, j-1});
+                zeroes.get(zeroes.size() - 1).add(new ZeroCoordinates(i-1, j-1));
                 dive(arr, i-1, j-1, zeroes);
             }
         }
-        //NORTH
+    }
+
+    public void diveNorth(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         if (i-1 >= 0) {
             if (arr[i-1][j] == 0 && !isInZeroes(i-1, j, zeroes)) {
-                zeroes.get(zeroes.size() - 1).add(new Integer[]{i-1, j});
+                zeroes.get(zeroes.size() - 1).add(new ZeroCoordinates(i-1, j));
                 dive(arr, i-1, j, zeroes);
             }
         }
-        //NORTH-EAST
+    }
+
+    public void diveNorthEast(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         if (i-1 >= 0 && j+1 < arr[0].length) {
             if (arr[i-1][j+1] == 0 && !isInZeroes(i-1, j+1, zeroes)) {
-                zeroes.get(zeroes.size() - 1).add(new Integer[]{i-1, j+1});
+                zeroes.get(zeroes.size() - 1).add(new ZeroCoordinates(i-1, j+1));
                 dive(arr, i-1, j+1, zeroes);
             }
         }
-        //EAST
+    }
+
+    public void diveEast(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         if (j+1 < arr[0].length) {
             if (arr[i][j+1] == 0 && !isInZeroes(i, j+1, zeroes)) {
-                zeroes.get(zeroes.size() - 1).add(new Integer[]{i, j+1});
+                zeroes.get(zeroes.size() - 1).add(new ZeroCoordinates(i, j+1));
                 dive(arr, i, j+1, zeroes);
             }
         }
-        //SOUTH-EAST
+    }
+
+    public void diveSouthEast(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         if (i+1 < arr.length && j+1 < arr[0].length) {
             if (arr[i+1][j+1] == 0 && !isInZeroes(i+1, j+1, zeroes)) {
-                zeroes.get(zeroes.size() - 1).add(new Integer[]{i+1, j+1});
+                zeroes.get(zeroes.size() - 1).add(new ZeroCoordinates(i+1, j+1));
                 dive(arr, i+1, j+1, zeroes);
             }
         }
-        //SOUTH
+    }
+
+    public void diveSouth(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         if (i+1 < arr.length) {
             if (arr[i+1][j] == 0 && !isInZeroes(i+1, j, zeroes)) {
-                zeroes.get(zeroes.size() - 1).add(new Integer[]{i+1, j});
+                zeroes.get(zeroes.size() - 1).add(new ZeroCoordinates(i+1, j));
                 dive(arr, i+1, j, zeroes);
             }
         }
-        //SOUTH-WEST
+    }
+
+    public void diveSouthWest(int[][] arr, int i, int j, List<List<ZeroCoordinates>> zeroes) {
         if (i+1 < arr.length && j-1 >= 0) {
             if (arr[i+1][j-1] == 0 && !isInZeroes(i+1, j-1, zeroes)) {
-                zeroes.get(zeroes.size() - 1).add(new Integer[]{i+1, j-1});
+                zeroes.get(zeroes.size() - 1).add(new ZeroCoordinates(i+1, j-1));
                 dive(arr, i+1, j-1, zeroes);
             }
         }
     }
 
-    public Boolean isInZeroes(int i, int j, List<List<Integer[]>> zeroes) {
-        for (List<Integer[]> chain: zeroes) {
-            for (Integer[] coords: chain) {
-                if (coords[0] == i && coords[1] == j) {
+    public Boolean isInZeroes(int i, int j, List<List<ZeroCoordinates>> zeroes) {
+        for (List<ZeroCoordinates> chain: zeroes) {
+            for (ZeroCoordinates coords: chain) {
+                if (coords.i == i && coords.j == j) {
                     return true;
                 }
             }
