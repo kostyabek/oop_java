@@ -37,7 +37,7 @@ public class Participant {
     }
 
     //Голосування при виборі головного органу керування
-    public void vote(PolitPower pp, Calendar date) {
+    public void vote(PoliticalPower pp, Calendar date) {
         Scanner sc = new Scanner(System.in);
         String voteFirstName = sc.nextLine();
         String voteLastName = sc.nextLine();
