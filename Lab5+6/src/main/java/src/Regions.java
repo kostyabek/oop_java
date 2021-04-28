@@ -1,0 +1,29 @@
+package src;
+
+public enum Regions {
+    CRIMEA,
+    DNIPRO,
+    ZAKARPATTYA,
+    KYIV,
+    LUHANSK,
+    ODESA,
+    SUMY,
+    KHERSON,
+    CHERNIHIV,
+    VINNITSYA,
+    DONETSK,
+    ZAPORIZHZHA,
+    KROPIVNITSKY,
+    LVIV,
+    POLTAVA,
+    TERNOPIL,
+    KHMELNITSKY,
+    CHERNIVTSI,
+    VOLYN,
+    ZHITOMYR,
+    IVANO_FRANKIVSK,
+    MYKOLAIV,
+    RIVNE,
+    KHARKIV,
+    CHERKASY
+}
